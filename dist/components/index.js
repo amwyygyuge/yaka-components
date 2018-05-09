@@ -20,15 +20,13 @@ var _yakaTable = require('./yaka-table/');
 
 var _yakaRadio = require('./yaka-radio/');
 
-var CheckboxGroup = Checkbox.Group;
-
 exports.default = {
   EditTable: _yakaEditTable.YakaEditTable,
   Switch: _yakaSwitch.YakaSwitch,
   Editor: _yakaEditor.YakaEditor,
   TimePicker: _yakaTimepicker.YakaTimePicker,
-  Checkbox: CheckboxGroup,
   Select: _yakaSelect.YakaSelect,
   Table: _yakaTable.YakaTable,
-  DatePicker: _yakaDatepicker.YakaDatePicker
+  DatePicker: _yakaDatepicker.YakaDatePicker,
+  Radio: _yakaRadio.Radio
 };

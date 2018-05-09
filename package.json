@@ -7,7 +7,6 @@
   "dependencies": {
     "igroot": "1.1.5",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0",
     "react-sortable-hoc": "^0.6.8",
     "uuid": "^3.1.0",
     "wangeditor": "3.0.12",
