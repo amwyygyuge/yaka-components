@@ -14,3 +14,10 @@
 6. Checkbox
 7. Radio
 8. DatePicker
+### 旧版引用的igroot组件
+1. Button
+2. InputNumber
+3. Card
+4. Checkbox
+5. Input
+6. TextArea
