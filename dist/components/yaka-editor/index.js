@@ -51,6 +51,9 @@ var YakaEditor = exports.YakaEditor = function (_Component) {
       var style = this.props.style;
 
       var elem = document.getElementById(this.id);
+      if (!elem) {
+        return;
+      }
       var editor = this.editor = new _wangeditor2.default(elem);
       // 使用 onchange 函数监听内容的变化，并实时更新到 state 中
       editor.customConfig.onchange = function (html) {

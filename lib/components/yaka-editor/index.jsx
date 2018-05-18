@@ -13,6 +13,7 @@ export class YakaEditor extends Component {
   componentDidMount() {
     const { style } = this.props
     const elem = document.getElementById(this.id)
+    if (!elem) { return }
     const editor = this.editor = new E(elem)
     // 使用 onchange 函数监听内容的变化，并实时更新到 state 中
     editor.customConfig.onchange = html => {
