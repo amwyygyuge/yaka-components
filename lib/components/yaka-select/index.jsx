@@ -4,6 +4,7 @@ import { Select } from 'igroot'
 const Option = Select.Option
 
 export class YakaSelect extends Component {
+
     handleFilterOption = (input, option) => {
         const { searchKeys, options } = this.props
         const inputText = input.toLowerCase()
@@ -23,29 +24,62 @@ export class YakaSelect extends Component {
 
         return isMatch
     }
-    render() {
-        let _value = undefined
-        const props = this.props
-        const { options, value, mode } = props
-        _value = value
-        const children = []
-        if ('options' in props) {
-            if (Array.isArray(options)) {
-                options.forEach(option => {
-                    children.push(<Option key={`${option.value}`} value={`${option.value}`}>{option.label}</Option>)
-                })
+
+    findOption = key => {
+        const { options } = this.props
+        if (!!options && Array.isArray(options)) {
+            const option = options.find(item => `${item.value}` === `${key}`)
+            if (!!option) {
+                return { key, label: option.label }
+            } else {
+                return { key, label: key }
             }
+        } else {
+            return { key, label: key }
         }
-        if (value === "" && mode === 'multiple') { _value = [] }
+    }
+
+    tranform_value = value => {
+        if (!!value) {
+            if (Array.isArray(value)) {
+                return value.map(item => {
+                    if (typeof item !== "object") {
+                        return this.findOption(item)
+                    } else {
+                        return item
+                    }
+                })
+            } else {
+                if (typeof value !== "object") {
+                    return this.findOption(value)
+                } else {
+                    return value
+                }
+            }
+        } else {
+            return undefined
+        }
+    }
+
+    render() {
+        const { options, value, mode } = this.props
+        const _value = this.tranform_value(value)
+        let _options = []
+        if (options && Array.isArray(options)) {
+            _options = options.map(option => {
+                return <Option key={`${option.value}`} value={`${option.value}`}>{option.label}</Option>
+            })
+        }
         return <Select
             showSearch
             allowClear
             filterOption={this.handleFilterOption}
-            {...props}
+            {...this.props}
             value={_value}
+            labelInValue
             style={{ width: '100%' }}
         >
-            {children}
+            {_options}
         </Select>
     }
 }

@@ -11,6 +11,8 @@ var _select2 = _interopRequireDefault(_select);
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 require('igroot/lib/select/style');
@@ -64,33 +66,62 @@ var YakaSelect = exports.YakaSelect = function (_Component) {
             }
 
             return isMatch;
+        }, _this.findOption = function (key) {
+            var options = _this.props.options;
+
+            if (!!options && Array.isArray(options)) {
+                var option = options.find(function (item) {
+                    return '' + item.value === '' + key;
+                });
+                if (!!option) {
+                    return { key: key, label: option.label };
+                } else {
+                    return { key: key, label: key };
+                }
+            } else {
+                return { key: key, label: key };
+            }
+        }, _this.tranform_value = function (value) {
+            if (!!value) {
+                if (Array.isArray(value)) {
+                    return value.map(function (item) {
+                        if ((typeof item === 'undefined' ? 'undefined' : _typeof(item)) !== "object") {
+                            return _this.findOption(item);
+                        } else {
+                            return item;
+                        }
+                    });
+                } else {
+                    if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) !== "object") {
+                        return _this.findOption(value);
+                    } else {
+                        return value;
+                    }
+                }
+            } else {
+                return undefined;
+            }
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(YakaSelect, [{
         key: 'render',
         value: function render() {
-            var _value = undefined;
-            var props = this.props;
-            var options = props.options,
-                value = props.value,
-                mode = props.mode;
+            var _props = this.props,
+                options = _props.options,
+                value = _props.value,
+                mode = _props.mode;
 
-            _value = value;
-            var children = [];
-            if ('options' in props) {
-                if (Array.isArray(options)) {
-                    options.forEach(function (option) {
-                        children.push(_react2.default.createElement(
-                            Option,
-                            { key: '' + option.value, value: '' + option.value },
-                            option.label
-                        ));
-                    });
-                }
-            }
-            if (value === "" && mode === 'multiple') {
-                _value = [];
+            var _value = this.tranform_value(value);
+            var _options = [];
+            if (options && Array.isArray(options)) {
+                _options = options.map(function (option) {
+                    return _react2.default.createElement(
+                        Option,
+                        { key: '' + option.value, value: '' + option.value },
+                        option.label
+                    );
+                });
             }
             return _react2.default.createElement(
                 _select2.default,
@@ -98,11 +129,12 @@ var YakaSelect = exports.YakaSelect = function (_Component) {
                     showSearch: true,
                     allowClear: true,
                     filterOption: this.handleFilterOption
-                }, props, {
+                }, this.props, {
                     value: _value,
+                    labelInValue: true,
                     style: { width: '100%' }
                 }),
-                children
+                _options
             );
         }
     }]);
