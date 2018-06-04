@@ -76,7 +76,8 @@ export class YakaEditTable extends Component {
         const { getFieldDecorator } = form
 
         columns.map(col => {
-            if (col.component && componentCheck(col)) {
+            const _ele = col.ele || col.component
+            if (_ele && componentCheck(_ele)) {
                 col.render = (text, row, index) => <FormItem style={{ marginBottom: 0 }}>
                     {
                         getFieldDecorator(`${ele.name}[${index}].${col.name}`, {

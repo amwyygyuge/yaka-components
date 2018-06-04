@@ -2,8 +2,10 @@
 import React from 'react'
 import { Row, Col } from 'igroot'
 
-export default function (ele, { yakaApis, form, bindingProps, componentCheck, elementWalk }) {
-    const props = bindingProps(ele, yakaApis)
+export default function (item, { yakaApis, bindingProps, elementWalk }) {
+    const props = bindingProps(item, yakaApis)
+    const { subs, children,name } = item
+    const _children = subs || children
     if ('style' in props) {
         Object.assign({ marginTop: 15 }, props.style)
     } else {
@@ -11,7 +13,7 @@ export default function (ele, { yakaApis, form, bindingProps, componentCheck, el
     }
     return <Row {...props} >
         {
-            ele.children.map((col, index) => <Col span={col.col && col.col || 0} key={`${ele.name}-${index}`}>
+            _children.map((col, index) => <Col span={col.col && col.col || 0} key={`${name}-${index}`}>
                 {elementWalk([col], yakaApis)}
             </Col>)
         }

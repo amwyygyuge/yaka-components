@@ -16,7 +16,7 @@ var _form = require('igroot/lib/form');
 
 var _form2 = _interopRequireDefault(_form);
 
-exports.default = function (ele, _ref) {
+exports.default = function (item, _ref) {
     var yakaApis = _ref.yakaApis,
         form = _ref.form,
         bindingProps = _ref.bindingProps,
@@ -24,19 +24,23 @@ exports.default = function (ele, _ref) {
         elementWalk = _ref.elementWalk;
 
     var FormItem = _form2.default.Item;
-    var _ele$props = ele.props,
-        colWidth = _ele$props.colWidth,
-        labelCol = _ele$props.labelCol,
-        wrapperCol = _ele$props.wrapperCol,
-        gutter = _ele$props.gutter,
-        onSubmit = _ele$props.onSubmit,
-        title = _ele$props.title;
+    var props = item.props,
+        children = item.children,
+        subs = item.subs,
+        name = item.name;
+    var colWidth = props.colWidth,
+        labelCol = props.labelCol,
+        wrapperCol = props.wrapperCol,
+        gutter = props.gutter,
+        onSubmit = props.onSubmit,
+        title = props.title;
 
+    var _subs = subs || children;
     var rowNum = Math.floor(24 / colWidth);
-    var times = Math.ceil(ele.children.length / rowNum);
+    var times = Math.ceil(_subs.length / rowNum);
     var _children = [];
     for (var i = 0; i < times; ++i) {
-        _children.push(ele.children.slice(i * rowNum, (i + 1) * rowNum));
+        _children.push(_subs.slice(i * rowNum, (i + 1) * rowNum));
     }
     var getFieldDecorator = form.getFieldDecorator;
 
@@ -50,35 +54,37 @@ exports.default = function (ele, _ref) {
             background: '#fff'
         }
     };
-    var props = bindingProps(ele, yakaApis);
+    var _props = bindingProps(item, yakaApis);
     return _react2.default.createElement(
         _row2.default,
-        { gutter: gutter ? gutter : 0, style: styles.block, key: ele.name },
+        { gutter: gutter ? gutter : 0, style: styles.block, key: name },
         _children.map(function (row, index) {
             return _react2.default.createElement(
                 _row2.default,
-                { gutter: gutter ? gutter : 0, key: '' + ele.name + index },
+                { gutter: gutter ? gutter : 0, key: '' + name + index },
                 row.map(function (col, subindex) {
                     var colProps = bindingProps(col, yakaApis);
+                    var ele = col.ele,
+                        component = col.component,
+                        value = col.value,
+                        rules = col.rules;
+
+                    var _ele = ele || component;
                     return _react2.default.createElement(
                         _col2.default,
                         {
                             span: col.col && col.col || colWidth,
-                            key: '' + ele.name + index + subindex },
+                            key: '' + name + index + subindex },
                         colProps.show === false ? _react2.default.createElement('div', null) : _react2.default.createElement(
                             FormItem,
                             {
                                 label: col.label,
-                                labelCol: {
-                                    span: col.labelCol ? col.labelCol : labelCol
-                                },
-                                wrapperCol: {
-                                    span: col.wrapperCol ? col.wrapperCol : wrapperCol
-                                }
+                                labelCol: { span: col.labelCol ? col.labelCol : labelCol },
+                                wrapperCol: { span: col.wrapperCol ? col.wrapperCol : wrapperCol }
                             },
-                            col.component && componentCheck(col) ? getFieldDecorator('' + col.name, {
-                                initialValue: col.value ? col.value : null,
-                                rules: col.rules ? col.rules : null
+                            _ele && componentCheck(_ele) ? getFieldDecorator('' + col.name, {
+                                initialValue: value ? value : null,
+                                rules: rules ? rules : null
                             })(elementWalk([col], yakaApis)[0]) : _react2.default.createElement(
                                 'div',
                                 null,

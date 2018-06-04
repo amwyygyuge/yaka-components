@@ -166,7 +166,8 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
 
 
             columns.map(function (col) {
-                if (col.component && componentCheck(col)) {
+                var _ele = col.ele || col.component;
+                if (_ele && componentCheck(_ele)) {
                     col.render = function (text, row, index) {
                         return _react2.default.createElement(
                             FormItem,
