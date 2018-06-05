@@ -72,23 +72,21 @@ export class YakaEditTable extends Component {
     }
 
     createColumns = (props) => {
-        const { columns, ele, form, elementWalk, yakaApis, componentCheck, remove } = props
+        const { columns, ele, form, elementWalk, yakaApis, componentCheck, remove, name } = props
         const { getFieldDecorator } = form
-
         columns.map(col => {
             const _ele = col.ele || col.component
-            if (_ele && componentCheck(_ele)) {
+            if (_ele && componentCheck(_ele) && col.name) {
                 col.render = (text, row, index) => <FormItem style={{ marginBottom: 0 }}>
                     {
-                        getFieldDecorator(`${ele.name}[${index}].${col.name}`, {
+                        getFieldDecorator(`${name}[${index}].${col.name}`, {
                             initialValue: text ? text : null,
                             rules: col.rules ? col.rules : null
                         })(
-                            elementWalk([col], yakaApis)[0]
+                            elementWalk([col], yakaApis, `${name}[${index}].${col.name}`)[0]
                         )
                     }
                 </FormItem>
-
                 this.optionsTitle.push(col.title)
                 this.optionsKey.push(col.name)
             } else {
@@ -113,7 +111,7 @@ export class YakaEditTable extends Component {
         }
         this.setState({
             columns,
-            name: ele.name
+            name
         })
     }
 

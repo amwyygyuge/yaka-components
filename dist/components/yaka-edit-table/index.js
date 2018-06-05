@@ -161,24 +161,23 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
                 elementWalk = props.elementWalk,
                 yakaApis = props.yakaApis,
                 componentCheck = props.componentCheck,
-                remove = props.remove;
+                remove = props.remove,
+                name = props.name;
             var getFieldDecorator = form.getFieldDecorator;
-
 
             columns.map(function (col) {
                 var _ele = col.ele || col.component;
-                if (_ele && componentCheck(_ele)) {
+                if (_ele && componentCheck(_ele) && col.name) {
                     col.render = function (text, row, index) {
                         return _react2.default.createElement(
                             FormItem,
                             { style: { marginBottom: 0 } },
-                            getFieldDecorator(ele.name + '[' + index + '].' + col.name, {
+                            getFieldDecorator(name + '[' + index + '].' + col.name, {
                                 initialValue: text ? text : null,
                                 rules: col.rules ? col.rules : null
-                            })(elementWalk([col], yakaApis)[0])
+                            })(elementWalk([col], yakaApis, name + '[' + index + '].' + col.name)[0])
                         );
                     };
-
                     _this.optionsTitle.push(col.title);
                     _this.optionsKey.push(col.name);
                 } else {
@@ -219,7 +218,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
             }
             _this.setState({
                 columns: columns,
-                name: ele.name
+                name: name
             });
         }, _this.createDafaultValue = function (columns) {
             var val = {};

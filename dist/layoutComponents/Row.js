@@ -12,12 +12,10 @@ var _col = require('igroot/lib/col');
 
 var _col2 = _interopRequireDefault(_col);
 
-exports.default = function (item, _ref) {
+exports.default = function (item, _ref, props) {
     var yakaApis = _ref.yakaApis,
         bindingProps = _ref.bindingProps,
         elementWalk = _ref.elementWalk;
-
-    var props = bindingProps(item, yakaApis);
     var subs = item.subs,
         children = item.children,
         name = item.name;
@@ -34,8 +32,8 @@ exports.default = function (item, _ref) {
         _children.map(function (col, index) {
             return _react2.default.createElement(
                 _col2.default,
-                { span: col.col && col.col || 0, key: name + '-' + index },
-                elementWalk([col], yakaApis)
+                { span: col.col && col.col || 0, key: props.key + '.' + index },
+                elementWalk([col], yakaApis, props.key + '.' + index)
             );
         })
     );
