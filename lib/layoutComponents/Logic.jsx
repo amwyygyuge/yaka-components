@@ -1,18 +1,19 @@
 import React from 'react'
-export default function (ele, { yakaApis, bindingProps, componentCheck, elementWalk }) {
-    const { value, components } = bindingProps(ele, yakaApis)
-    if (Array.isArray(components)) {
+export default function (item, { yakaApis, bindingProps, componentCheck, elementWalk }, props) {
+    const { value, eles, key } = props
+    if (Array.isArray(eles)) {
         return <div>
-            {components.map(component => {
+            {eles.map(_ele => {
+                const { ele } = _ele
                 if (Array.isArray(value)) {
-                    if (value.some(val => val === component.value)) {
-                        return elementWalk(Array.isArray(component.component) ? component.component : [component.component], yakaApis)
+                    if (value.some(val => val === _ele.value)) {
+                        return elementWalk(Array.isArray(ele) ? ele : [ele], yakaApis, key)
                     } else {
                         return null
                     }
                 } else {
-                    if (value === component.value) {
-                        return elementWalk(Array.isArray(component.component) ? component.component : [component.component], yakaApis)
+                    if (value === _ele.value) {
+                        return elementWalk(Array.isArray(ele) ? ele : [ele], yakaApis, key)
                     } else {
                         return null
                     }
@@ -20,9 +21,7 @@ export default function (ele, { yakaApis, bindingProps, componentCheck, elementW
             })}
         </div>
     } else {
-        return <div>
-            {components.value === value ? elementWalk(Array.isArray(components.component) ? components.component : [components.component], yakaApis) : null}
-        </div>
-    }
 
+        return eles.value === value ? elementWalk(Array.isArray(eles.ele) ? eles.ele : [eles.ele], yakaApis, key) : null
+    }
 }
