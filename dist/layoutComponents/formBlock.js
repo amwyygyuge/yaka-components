@@ -31,8 +31,6 @@ exports.default = function (item, _ref, props) {
         labelCol = props.labelCol,
         wrapperCol = props.wrapperCol,
         gutter = props.gutter,
-        onSubmit = props.onSubmit,
-        title = props.title,
         key = props.key;
 
     var _subs = subs || children;
@@ -65,16 +63,17 @@ exports.default = function (item, _ref, props) {
                     var colProps = bindingProps(col, yakaApis);
                     var ele = col.ele,
                         component = col.component,
-                        value = col.value,
                         rules = col.rules;
 
                     var _ele = ele || component;
                     var Ele = '';
                     if (col.name && _ele && componentCheck(_ele)) {
-                        Ele = getFieldDecorator('' + col.name, {
-                            initialValue: value ? value : null,
-                            rules: rules ? rules : null
-                        })(elementWalk([col], yakaApis, key + '.' + index + '.' + subindex)[0]);
+                        var formCreatFunc = function formCreatFunc(element) {
+                            return getFieldDecorator('' + col.name, {
+                                rules: rules ? rules : null
+                            })(element);
+                        };
+                        Ele = elementWalk([col], yakaApis, key + '.' + index + '.' + subindex, formCreatFunc)[0];
                     } else {
                         Ele = _react2.default.createElement(
                             'div',

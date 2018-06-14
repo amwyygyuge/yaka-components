@@ -1,10 +1,10 @@
 
-import React, { Component } from 'react'
-import { Row, Col, Form, Button } from 'igroot'
+import React from 'react'
+import { Row, Col, Form } from 'igroot'
 export default function (item, { yakaApis, form, bindingProps, componentCheck, elementWalk }, props) {
     const FormItem = Form.Item
     const { children, subs, name } = item
-    const { colWidth, labelCol, wrapperCol, gutter, onSubmit, title, key } = props
+    const { colWidth, labelCol, wrapperCol, gutter, key } = props
     const _subs = subs || children
     const rowNum = Math.floor(24 / colWidth)
     const times = Math.ceil(_subs.length / rowNum)
@@ -30,16 +30,14 @@ export default function (item, { yakaApis, form, bindingProps, componentCheck, e
                     {
                         row.map((col, subindex) => {
                             const colProps = bindingProps(col, yakaApis)
-                            const { ele, component, value, rules } = col
+                            const { ele, component, rules } = col
                             const _ele = ele || component
                             let Ele = ''
                             if (col.name && _ele && componentCheck(_ele)) {
-                                Ele = getFieldDecorator(`${col.name}`, {
-                                    initialValue: value ? value : null,
+                                const formCreatFunc = element => getFieldDecorator(`${col.name}`, {
                                     rules: rules ? rules : null
-                                })(
-                                    elementWalk([col], yakaApis, `${key}.${index}.${subindex}`)[0]
-                                )
+                                })(element)
+                                Ele = elementWalk([col], yakaApis, `${key}.${index}.${subindex}`, formCreatFunc)[0]
                             } else {
                                 Ele = <div>不符合配置规则</div>
                             }

@@ -76,15 +76,13 @@ export class YakaEditTable extends Component {
         const { getFieldDecorator } = form
         columns.map(col => {
             const _ele = col.ele || col.component
+
             if (_ele && componentCheck(_ele) && col.name) {
                 col.render = (text, row, index) => <FormItem style={{ marginBottom: 0 }}>
                     {
-                        getFieldDecorator(`${name}[${index}].${col.name}`, {
-                            initialValue: text ? text : null,
+                        elementWalk([col], yakaApis, `${name}[${index}].${col.name}`, element => getFieldDecorator(`${name}[${index}].${col.name}`, {
                             rules: col.rules ? col.rules : null
-                        })(
-                            elementWalk([col], yakaApis, `${name}[${index}].${col.name}`)[0]
-                        )
+                        })(element))[0]
                     }
                 </FormItem>
                 this.optionsTitle.push(col.title)
@@ -127,7 +125,6 @@ export class YakaEditTable extends Component {
     handleAdd = () => {
         const { dataSource } = this.state
         dataSource.push(Object.assign({ key: uuidv4() }, this._value))
-
         this.setState({
             dataSource
         })
@@ -407,6 +404,7 @@ export class YakaEditTable extends Component {
             <div className="yaka-edit-table">
                 {this.renderOpt()}
                 <Table
+                    style={{ marginTop: 10 }}
                     columns={columns}
                     footer={add === false ? null : AddButton}
                     dataSource={dataSource}

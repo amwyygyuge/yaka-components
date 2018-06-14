@@ -167,15 +167,17 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
 
             columns.map(function (col) {
                 var _ele = col.ele || col.component;
+
                 if (_ele && componentCheck(_ele) && col.name) {
                     col.render = function (text, row, index) {
                         return _react2.default.createElement(
                             FormItem,
                             { style: { marginBottom: 0 } },
-                            getFieldDecorator(name + '[' + index + '].' + col.name, {
-                                initialValue: text ? text : null,
-                                rules: col.rules ? col.rules : null
-                            })(elementWalk([col], yakaApis, name + '[' + index + '].' + col.name)[0])
+                            elementWalk([col], yakaApis, name + '[' + index + '].' + col.name, function (element) {
+                                return getFieldDecorator(name + '[' + index + '].' + col.name, {
+                                    rules: col.rules ? col.rules : null
+                                })(element);
+                            })[0]
                         );
                     };
                     _this.optionsTitle.push(col.title);
@@ -230,7 +232,6 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
             var dataSource = _this.state.dataSource;
 
             dataSource.push(Object.assign({ key: (0, _v2.default)() }, _this._value));
-
             _this.setState({
                 dataSource: dataSource
             });
@@ -617,6 +618,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
                 { className: 'yaka-edit-table' },
                 this.renderOpt(),
                 _react2.default.createElement(_table2.default, {
+                    style: { marginTop: 10 },
                     columns: columns,
                     footer: add === false ? null : AddButton,
                     dataSource: dataSource,
