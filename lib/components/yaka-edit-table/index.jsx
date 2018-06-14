@@ -74,7 +74,8 @@ export class YakaEditTable extends Component {
     createColumns = (props) => {
         const { columns, ele, form, elementWalk, yakaApis, componentCheck, remove, name } = props
         const { getFieldDecorator } = form
-        columns.map(col => {
+        const _columns = JSON.parse(JSON.stringify(columns))
+        _columns.map(col => {
             const _ele = col.ele || col.component
 
             if (_ele && componentCheck(_ele) && col.name) {
@@ -97,7 +98,7 @@ export class YakaEditTable extends Component {
         })
 
         if (remove !== false) {
-            columns.push({
+            _columns.push({
                 title: '操作',
                 name: 'handle',
                 width: 60,
@@ -107,10 +108,7 @@ export class YakaEditTable extends Component {
                 </div>
             })
         }
-        this.setState({
-            columns,
-            name
-        })
+        this.setState({ columns: _columns, name })
     }
 
 
@@ -410,6 +408,7 @@ export class YakaEditTable extends Component {
                     dataSource={dataSource}
                     pagination={false}
                     rowKey='key'
+                    bordered
                     scroll={scrollWidth ? { x: scrollWidth } : { x: null, y: null }}
                 />
                 <Modal

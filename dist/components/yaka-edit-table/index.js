@@ -165,7 +165,8 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
                 name = props.name;
             var getFieldDecorator = form.getFieldDecorator;
 
-            columns.map(function (col) {
+            var _columns = JSON.parse(JSON.stringify(columns));
+            _columns.map(function (col) {
                 var _ele = col.ele || col.component;
 
                 if (_ele && componentCheck(_ele) && col.name) {
@@ -198,7 +199,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
             });
 
             if (remove !== false) {
-                columns.push({
+                _columns.push({
                     title: '操作',
                     name: 'handle',
                     width: 60,
@@ -218,10 +219,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
                     }
                 });
             }
-            _this.setState({
-                columns: columns,
-                name: name
-            });
+            _this.setState({ columns: _columns, name: name });
         }, _this.createDafaultValue = function (columns) {
             var val = {};
             columns.forEach(function (col) {
@@ -624,6 +622,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
                     dataSource: dataSource,
                     pagination: false,
                     rowKey: 'key',
+                    bordered: true,
                     scroll: scrollWidth ? { x: scrollWidth } : { x: null, y: null }
                 }),
                 _react2.default.createElement(

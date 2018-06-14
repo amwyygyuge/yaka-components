@@ -12,8 +12,8 @@ export default function (item, { yakaApis, bindingProps, elementWalk }, props) {
     }
     return <Row {...props} >
         {
-            _children.map((col, index) => <Col span={col.col && col.col || 0} key={`${props.key}.${index}`}>
-                {elementWalk([col], yakaApis, `${props.key}.${index}`)}
+            _children.map((_col, index) => <Col span={_col.col ? _col.col : null} key={`${props.key}.${index}`}>
+                {elementWalk([_col], yakaApis, `${props.key}.${index}`)}
             </Col>)
         }
     </Row>

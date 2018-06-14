@@ -8,9 +8,9 @@ var _row = require('igroot/lib/row');
 
 var _row2 = _interopRequireDefault(_row);
 
-var _col = require('igroot/lib/col');
+var _col2 = require('igroot/lib/col');
 
-var _col2 = _interopRequireDefault(_col);
+var _col3 = _interopRequireDefault(_col2);
 
 exports.default = function (item, _ref, props) {
     var yakaApis = _ref.yakaApis,
@@ -29,11 +29,11 @@ exports.default = function (item, _ref, props) {
     return _react2.default.createElement(
         _row2.default,
         props,
-        _children.map(function (col, index) {
+        _children.map(function (_col, index) {
             return _react2.default.createElement(
-                _col2.default,
-                { span: col.col && col.col || 0, key: props.key + '.' + index },
-                elementWalk([col], yakaApis, props.key + '.' + index)
+                _col3.default,
+                { span: _col.col ? _col.col : null, key: props.key + '.' + index },
+                elementWalk([_col], yakaApis, props.key + '.' + index)
             );
         })
     );
