@@ -167,32 +167,19 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
 
             var _columns = JSON.parse(JSON.stringify(columns));
             _columns.map(function (col) {
-                var _ele = col.ele || col.component;
-
-                if (_ele && componentCheck(_ele) && col.name) {
-                    col.render = function (text, row, index) {
-                        return _react2.default.createElement(
-                            FormItem,
-                            { style: { marginBottom: 0 } },
-                            elementWalk([col], yakaApis, name + '[' + index + '].' + col.name, function (element) {
-                                return getFieldDecorator(name + '[' + index + '].' + col.name, {
-                                    rules: col.rules ? col.rules : null
-                                })(element);
-                            })[0]
-                        );
-                    };
-                    _this.optionsTitle.push(col.title);
-                    _this.optionsKey.push(col.name);
-                } else {
-                    col.render = function () {
-                        return _react2.default.createElement(
-                            'div',
-                            null,
-                            '\u975E\u6CD5\u8868\u5355\u7EC4\u4EF6'
-                        );
-                    };
-                }
-
+                col.render = function (text, row, index) {
+                    return _react2.default.createElement(
+                        FormItem,
+                        { style: { marginBottom: 0 } },
+                        elementWalk([col], yakaApis, name + '[' + index + '].' + col.name, function (element) {
+                            return getFieldDecorator(name + '[' + index + '].' + col.name, {
+                                rules: col.rules ? col.rules : null
+                            })(element);
+                        })[0]
+                    );
+                };
+                _this.optionsTitle.push(col.title);
+                _this.optionsKey.push(col.name);
                 col.dataIndex = col.name;
                 col.width = col.width ? col.width : null;
                 return col;

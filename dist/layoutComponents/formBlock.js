@@ -24,16 +24,17 @@ exports.default = function (item, _ref, props) {
         elementWalk = _ref.elementWalk;
 
     var FormItem = _form2.default.Item;
-    var children = item.children,
-        subs = item.subs,
+    var subs = item.subs,
         name = item.name;
+
+    if (!subs) return null;
     var colWidth = props.colWidth,
         labelCol = props.labelCol,
         wrapperCol = props.wrapperCol,
         gutter = props.gutter,
         key = props.key;
 
-    var _subs = subs || children;
+    var _subs = subs;
     var rowNum = Math.floor(24 / colWidth);
     var times = Math.ceil(_subs.length / rowNum);
     var _children = [];
@@ -61,26 +62,15 @@ exports.default = function (item, _ref, props) {
                 { gutter: gutter ? gutter : 0, key: key + '.' + index },
                 row.map(function (col, subindex) {
                     var colProps = bindingProps(col, yakaApis);
-                    var ele = col.ele,
-                        component = col.component,
-                        rules = col.rules;
+                    var rules = col.rules;
 
-                    var _ele = ele || component;
                     var Ele = '';
-                    if (col.name && _ele && componentCheck(_ele)) {
-                        var formCreatFunc = function formCreatFunc(element) {
-                            return getFieldDecorator('' + col.name, {
-                                rules: rules ? rules : null
-                            })(element);
-                        };
-                        Ele = elementWalk([col], yakaApis, key + '.' + index + '.' + subindex, formCreatFunc)[0];
-                    } else {
-                        Ele = _react2.default.createElement(
-                            'div',
-                            null,
-                            '\u4E0D\u7B26\u5408\u914D\u7F6E\u89C4\u5219'
-                        );
-                    }
+                    var formCreatFunc = function formCreatFunc(element) {
+                        return getFieldDecorator('' + col.name, {
+                            rules: rules ? rules : null
+                        })(element);
+                    };
+                    Ele = elementWalk([col], yakaApis, key + '.' + index + '.' + subindex, formCreatFunc, 'formBlock')[0];
                     return _react2.default.createElement(
                         _col2.default,
                         {

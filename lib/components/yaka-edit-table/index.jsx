@@ -76,22 +76,15 @@ export class YakaEditTable extends Component {
         const { getFieldDecorator } = form
         const _columns = JSON.parse(JSON.stringify(columns))
         _columns.map(col => {
-            const _ele = col.ele || col.component
-
-            if (_ele && componentCheck(_ele) && col.name) {
-                col.render = (text, row, index) => <FormItem style={{ marginBottom: 0 }}>
-                    {
-                        elementWalk([col], yakaApis, `${name}[${index}].${col.name}`, element => getFieldDecorator(`${name}[${index}].${col.name}`, {
-                            rules: col.rules ? col.rules : null
-                        })(element))[0]
-                    }
-                </FormItem>
-                this.optionsTitle.push(col.title)
-                this.optionsKey.push(col.name)
-            } else {
-                col.render = () => <div>非法表单组件</div>
-            }
-
+            col.render = (text, row, index) => <FormItem style={{ marginBottom: 0 }}>
+                {
+                    elementWalk([col], yakaApis, `${name}[${index}].${col.name}`, element => getFieldDecorator(`${name}[${index}].${col.name}`, {
+                        rules: col.rules ? col.rules : null
+                    })(element))[0]
+                }
+            </FormItem>
+            this.optionsTitle.push(col.title)
+            this.optionsKey.push(col.name)
             col.dataIndex = col.name
             col.width = col.width ? col.width : null
             return col

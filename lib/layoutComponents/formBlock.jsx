@@ -3,9 +3,10 @@ import React from 'react'
 import { Row, Col, Form } from 'igroot'
 export default function (item, { yakaApis, form, bindingProps, componentCheck, elementWalk }, props) {
     const FormItem = Form.Item
-    const { children, subs, name } = item
+    const { subs, name } = item
+    if (!subs) return null
     const { colWidth, labelCol, wrapperCol, gutter, key } = props
-    const _subs = subs || children
+    const _subs = subs
     const rowNum = Math.floor(24 / colWidth)
     const times = Math.ceil(_subs.length / rowNum)
     const _children = []
@@ -30,17 +31,12 @@ export default function (item, { yakaApis, form, bindingProps, componentCheck, e
                     {
                         row.map((col, subindex) => {
                             const colProps = bindingProps(col, yakaApis)
-                            const { ele, component, rules } = col
-                            const _ele = ele || component
+                            const { rules } = col
                             let Ele = ''
-                            if (col.name && _ele && componentCheck(_ele)) {
-                                const formCreatFunc = element => getFieldDecorator(`${col.name}`, {
-                                    rules: rules ? rules : null
-                                })(element)
-                                Ele = elementWalk([col], yakaApis, `${key}.${index}.${subindex}`, formCreatFunc)[0]
-                            } else {
-                                Ele = <div>不符合配置规则</div>
-                            }
+                            const formCreatFunc = element => getFieldDecorator(`${col.name}`, {
+                                rules: rules ? rules : null
+                            })(element)
+                            Ele = elementWalk([col], yakaApis, `${key}.${index}.${subindex}`, formCreatFunc, 'formBlock')[0]
                             return <Col
                                 span={col.col && col.col || colWidth}
                                 key={`${key}.${index}.${subindex}`}
